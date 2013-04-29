@@ -1,0 +1,12 @@
+{% extends "when/when.html" %}
+
+{% block content %}
+<h1>Prévisions</h1>
+
+<p>/!\Les résultats se font en fonction des disponibilités des gens… donc <a href="dispos">allez renseigner les votres !</a>/!\</p>
+
+{% for moment in moments %}
+    <p>{{ moment }}</p>
+{% endfor %}
+
+{% endblock %}

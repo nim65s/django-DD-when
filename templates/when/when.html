@@ -1,0 +1,11 @@
+{% extends "main.html" %}
+
+{% block titre %}Nim’s web.log: D&amp;D: When ?{% endblock %}
+{% block soustitre %}D&amp;D: When ?{% endblock %}
+
+{% block nav %}
+    <li><a href="{% url 'when:home' %}">Prévisions</a></li>
+    <li><a href="{% url 'when:groupes' %}">Groupes</a></li>
+    <li><a href="{% url 'when:dispos' %}">Dispos</a></li>
+    <li><a href="{% url 'when:faq' %}">FAQ</a></li>
+{% endblock %}
