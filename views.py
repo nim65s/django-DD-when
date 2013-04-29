@@ -4,7 +4,7 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 
-from when.models import Moment, Dispo
+from when.models import Moment, DispoToPlay, DispoToPlayForm
 
 from datetime import datetime
 
@@ -17,11 +17,11 @@ def home(request):
 @login_required
 def dispos(request):
     if request.method == 'POST':
-        form = DispoForm(request.POST)
+        form = DispoToPlayForm(request.POST)
         if form.is_valid():
             form.instance.user = request.user
             form.save()
-    dispos = Dispo.objet.filter(user=request.user, moment__gte=datetime.now()).order_by('moment')
+    dispos = DispoToPlay.objet.filter(user=request.user, moment__gte=datetime.now()).order_by('moment')
     return render(request, 'when/dispos.html', {'dispos': dispos})
 
 @login_required

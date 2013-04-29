@@ -9,7 +9,7 @@ class Moment(Model):
     def __unicode__(self):
         return u'%s' % self.moment
 
-class Dispo(Model):
+class DispoToPlay(Model):
     moment = ForeignKey(Moment)
     user = ForeignKey(User)
     dispo = NullBooleanField()
@@ -21,7 +21,7 @@ class Dispo(Model):
             return u'%s peut essayer d’être dispo le %s' % (self.user, self.moment)
         return u'%s n’est pas dispo le %s' % (self.user, self.moment)
 
-class DispoForm(ModelForm):
+class DispoToPlayForm(ModelForm):
     class Meta:
-        model = Dispo
+        model = DispoToPlay
         exclude = ('user')
