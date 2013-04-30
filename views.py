@@ -16,13 +16,14 @@ def home(request):
 
 @login_required
 def dispos(request):
-    if request.method == 'POST':
-        form = DispoToPlayForm(request.POST)
-        if form.is_valid():
-            form.instance.user = request.user
-            form.save()
-    dispos = DispoToPlay.objects.filter(user=request.user, moment__gte=datetime.now()).order_by('moment')
-    return render(request, 'when/dispos.html', {'dispos': dispos})
+    return home(request)  # TODO
+    #if request.method == 'POST':
+        #form = DispoToPlayForm(request.POST)
+        #if form.is_valid():
+            #form.instance.user = request.user
+            #form.save()
+    #dispos = DispoToPlay.objects.filter(user=request.user, moment__gte=datetime.now()).order_by('moment')
+    #return render(request, 'when/dispos.html', {'dispos': dispos})
 
 @login_required
 def groupes(request):
