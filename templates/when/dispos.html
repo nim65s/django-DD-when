@@ -1,10 +1,12 @@
 {% extends "when/when.html" %}
 
 {% block content %}
-<h1>Dispos</h1>
+<h1>Disponibilités</h1>
 
 {% for dispo in dispos %}
-    <p>{{ dispo }}</p>
+    {% ifchanged %}<h2>{{ dispo.moment.moment|date:"F Y" }}</h2>{% endifchanged %}
+    {% ifchanged %}<h3>{{ dispo.moment.moment|date:"l j" }}</h3>{% endifchanged %}
+    <p>{% if dispo.dispo %}OK{% else %}KO{% endif %}: {{ dispo.user }}</p>
 {% endfor %}
 
 {% endblock %}

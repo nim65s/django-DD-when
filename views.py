@@ -1,5 +1,5 @@
 #-*- coding: utf-8 -*-
-#from django.contrib import messages
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 
@@ -10,13 +10,12 @@ from datetime import datetime
 
 def home(request):
     groupes = {}
-    for groupe in get_groupes():
+    for groupe, group_name in get_groupes():
         if request.user in groupe.user_set.all():
-            group_name = groupe.name[5:].capitalize().replace('_', ' ')
             groupes[group_name] = []
             for moment in Moment.objects.filter(moment__gte=datetime.now()).order_by('moment'):
                 for user in groupe.user_set.all():  # TODO: aggregate ? En tout cas faut démochifier…
-                    if DispoToPlay.objects.get(moment=moment, user=user).dispo is False:
+                    if DispoToPlay.objects.get_or_create(moment=moment, user=user)[0].dispo is False:
                         break
                 else:
                     groupes[group_name].append(moment)
@@ -27,16 +26,24 @@ def home(request):
 
 @login_required
 def dispos(request):
-    return home(request)  # TODO
-    #dispos = DispoToPlay.objects.filter(user=request.user, moment__gte=datetime.now()).order_by('moment')
+    dispos = DispoToPlay.objects.filter(moment__moment__gte=datetime.now()).order_by('moment')
     #if request.method == 'POST':
         #form = DispoToPlayForm(request.POST)
         #if form.is_valid():
             #form.instance.user = request.user
             #form.save()
-    #return render(request, 'when/dispos.html', {'dispos': dispos})
+    return render(request, 'when/dispos.html', {'dispos': dispos})
 
 
 @login_required
 def groupes(request):
-    return home(request)  # TODO
+    return render(request, 'when/groupes.html', {'groupes': get_groupes()})
+
+
+@login_required
+def pasdispo(request, moment):
+    dtp = DispoToPlay.objects.get_or_create(user=request.user, moment=Moment.objects.get(id=moment))[0]
+    dtp.dispo = False
+    dtp.save()
+    messages.info(request, u"Indisponibilité enregistrée")
+    return home(request)

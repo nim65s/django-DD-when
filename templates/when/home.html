@@ -6,7 +6,9 @@
 {% for groupe, moments in groupes.iteritems %}
     <h2>{{ groupe }}</h2>
     <ul>
-        {% for moment in moments %}<li>{{ moment }}</li&>{% endfor %}
+        {% for moment in moments %}
+        <li>{{ moment.moment }} - <a href="{% url 'when:pasdispo' moment.id %}">Je suis pas dispo :(</a></li>
+        {% endfor %}
     </ul>
 {% endfor %}
 

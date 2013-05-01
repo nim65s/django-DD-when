@@ -5,7 +5,7 @@ from django.contrib.auth.models import User, Group
 
 
 def get_groupes():
-    return Group.objects.filter(name__startswith='when')
+    return [(groupe, groupe.name[5:].replace('_', ' ')) for groupe in Group.objects.filter(name__startswith='when')]
 
 
 class Moment(Model):
@@ -26,7 +26,7 @@ class DispoToPlay(Model):
     def __unicode__(self):
         if self.dispo:
             return u'%s est dispo le %s' % (self.user, self.moment)
-        if self.dispo is None:
+        if self.dispo is None:  # TODO: NYI
             return u'%s peut essayer d’être dispo le %s' % (self.user, self.moment)
         return u'%s n’est pas dispo le %s' % (self.user, self.moment)
 

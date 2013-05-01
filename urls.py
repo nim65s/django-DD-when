@@ -6,6 +6,7 @@ from when.views import *
 urlpatterns = patterns('',
         url(r'^$', home, name='home'),
         url(r'^dispos$', dispos, name='dispos'),
+        url(r'^pasdispo/(?P<moment>\d+)/$', pasdispo, name='pasdispo'),
         url(r'^groupes$', groupes, name='groupes'),
         url(r'^faq$', TemplateView.as_view(template_name='when/faq.html'), name="faq"),
         )
