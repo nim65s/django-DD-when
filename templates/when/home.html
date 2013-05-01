@@ -3,10 +3,11 @@
 {% block content %}
 <h1>Prévisions</h1>
 
-<p>/!\Les résultats se font en fonction des disponibilités des gens… donc <a href="{% url 'when:dispos' %}">allez renseigner les votres !</a>/!\</p>
-
-{% for moment in moments %}
-    <p>{{ moment }}</p>
+{% for groupe, moments in groupes.iteritems %}
+    <h2>{{ groupe }}</h2>
+    <ul>
+        {% for moment in moments %}<li>{{ moment }}</li&>{% endfor %}
+    </ul>
 {% endfor %}
 
 {% endblock %}
