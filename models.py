@@ -3,11 +3,13 @@ from django.db.models import Model, ForeignKey, NullBooleanField, DateTimeField
 from django.forms import ModelForm
 from django.contrib.auth.models import User
 
+
 class Moment(Model):
     moment = DateTimeField()
 
     def __unicode__(self):
         return u'%s' % self.moment
+
 
 class DispoToPlay(Model):
     moment = ForeignKey(Moment)
@@ -20,6 +22,7 @@ class DispoToPlay(Model):
         if dispo is None:
             return u'%s peut essayer d’être dispo le %s' % (self.user, self.moment)
         return u'%s n’est pas dispo le %s' % (self.user, self.moment)
+
 
 class DispoToPlayForm(ModelForm):
     class Meta:

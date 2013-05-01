@@ -25,6 +25,7 @@ def dispos(request):
     #dispos = DispoToPlay.objects.filter(user=request.user, moment__gte=datetime.now()).order_by('moment')
     #return render(request, 'when/dispos.html', {'dispos': dispos})
 
+
 @login_required
 def groupes(request):
     return home(request)  # TODO

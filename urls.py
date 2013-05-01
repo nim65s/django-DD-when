@@ -9,4 +9,3 @@ urlpatterns = patterns('',
         url(r'^groupes$', groupes, name='groupes'),
         url(r'^faq$', TemplateView.as_view(template_name='when/faq.html'), name="faq"),
         )
-
