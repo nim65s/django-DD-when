@@ -28,7 +28,3 @@ def dispos(request):
 @login_required
 def groupes(request):
     return home(request)  # TODO
-
-@login_required
-def faq(request):
-    return home(request)  # TODO
