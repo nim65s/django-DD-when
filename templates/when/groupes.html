@@ -1,0 +1,18 @@
+{% extends "when/when.html" %}
+
+{% block content %}
+<h1>Groupes</h1>
+
+{% for groupe, group_name in groupes %}
+    <h2>{{ group_name }}</h2>
+    <ul>
+        {% for user in groupe.user_set.all %}
+            <li>{{ user.first_name }} {{ user.last_name }}: <a href="mailto:{{ user.email }}">mail</a></ls>
+        {% endfor %}
+    </ul>
+    <p><a href="mailto:{% for user in groupe.user_set.all %}{{ user.first_name }}%20{{ user.last_name }}%20<{{ user.email }}>,{% endfor %}">
+        Envoyer un mail à tous les membres de ce groupe
+    </a></p>
+{% endfor %}
+
+{% endblock %}
