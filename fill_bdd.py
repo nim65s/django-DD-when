@@ -8,8 +8,8 @@ from pytz import timezone
 
 tz = timezone('Europe/Paris')
 
-dt = datetime(2013,5,1,20,tzinfo=tz)
-end = datetime(2013,7,1,20,tzinfo=tz)
+dt = tz.localize(datetime(2013,5,1,20))
+end = tz.localize(datetime(2013,7,1,20))
 
 jour = timedelta(1)
 
