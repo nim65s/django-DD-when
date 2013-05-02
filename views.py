@@ -46,4 +46,17 @@ def pasdispo(request, moment):
     dtp.dispo = False
     dtp.save()
     messages.info(request, u"Indisponibilité enregistrée")
+    if 'next' in request.GET and request.GET['next'] == 'dispos':
+        return dispos(request)
+    return home(request)
+
+
+@login_required
+def dispo(request, moment):
+    dtp = DispoToPlay.objects.get_or_create(user=request.user, moment=Moment.objects.get(id=moment))[0]
+    dtp.dispo = True
+    dtp.save()
+    messages.success(request, u"Welcome Back \o/")
+    if 'next' in request.GET and request.GET['next'] == 'dispos':
+        return dispos(request)
     return home(request)
