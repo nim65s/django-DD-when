@@ -8,7 +8,7 @@ METHOD:PUBLISH
 {% load tz %}{% for evt in ok %}BEGIN:VEVENT
 DTSTART:{{ evt.moment|utc|date:"Ymd\THis\Z" }}
 DTEND:{{ evt.moment|utc|date:"Ymd\THis\Z" }}
-UID:AEnim - {{ group_name }} - {{ evt.moment|date:"c" }}
+UID:AEnim - {{ group_name }}: {{ evt.moment|date:"c" }}
 DESCRIPTION:Créneau libre pour une partie de {{ group_name }}
 LOCATION:Sur le web \\o/
 SUMMARY:{{ group_name }}
