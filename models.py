@@ -4,8 +4,12 @@ from django.forms import ModelForm
 from django.contrib.auth.models import User, Group
 
 
+def group_name(groupe):
+    return groupe.name[5:].replace('_', ' ')
+
+
 def get_groupes():
-    return [(groupe, groupe.name[5:].replace('_', ' ')) for groupe in Group.objects.filter(name__startswith='when')]
+    return [(groupe, group_name(groupe)) for groupe in Group.objects.filter(name__startswith='when')]
 
 
 class Moment(Model):

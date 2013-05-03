@@ -4,12 +4,20 @@
 <h1>Prévisions</h1>
 
 {% for groupe, moments in groupes.iteritems %}
-    <h2>{{ groupe }}</h2>
+    <h2>{{ groupe.0 }}</h2>
     <ul>
         {% for moment in moments %}
         <li>{{ moment.moment }} - <a href="{% url 'when:pasdispo' moment.id %}">Je suis pas dispo :(</a></li>
         {% endfor %}
     </ul>
+    <p>
+        Sinon, vous pouvez aussi
+        <a href="{% url 'when:ics' groupe.1 %}">télécharger</a>
+        ou
+        <a href="webcal://perso.saurel.me{% url 'when:ics' groupe.1 %}">vous abonner</a>
+        au calendrier généré \o/
+    </p>
+
 {% endfor %}
 
 {% endblock %}

@@ -1,26 +1,32 @@
 #-*- coding: utf-8 -*-
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
+from django.contrib.auth.models import Group
+from django.shortcuts import render, get_object_or_404
 
-from when.models import Moment, DispoToPlay, DispoToPlayForm, get_groupes
+from when.models import *
 
 from datetime import datetime
+
+
+def moments_ok(groupe):
+    moments = []
+    for moment in Moment.objects.filter(moment__gte=datetime.now()).order_by('moment'):
+        for user in groupe.user_set.all():  # TODO: aggregate ? En tout cas faut démochifier…
+            if DispoToPlay.objects.get_or_create(moment=moment, user=user)[0].dispo is False:
+                break
+        else:
+            moments.append(moment)
+            if len(moments) > 9:
+                break
+    return moments
 
 
 def home(request):
     groupes = {}
     for groupe, group_name in get_groupes():
         if request.user in groupe.user_set.all():
-            groupes[group_name] = []
-            for moment in Moment.objects.filter(moment__gte=datetime.now()).order_by('moment'):
-                for user in groupe.user_set.all():  # TODO: aggregate ? En tout cas faut démochifier…
-                    if DispoToPlay.objects.get_or_create(moment=moment, user=user)[0].dispo is False:
-                        break
-                else:
-                    groupes[group_name].append(moment)
-                    if len(groupes[group_name]) > 4:
-                        break
+            groupes[(group_name, groupe.id)] = moments_ok(groupe)
     return render(request, 'when/home.html', {'groupes': groupes})
 
 
@@ -60,3 +66,13 @@ def dispo(request, moment):
     if 'next' in request.GET and request.GET['next'] == 'dispos':
         return dispos(request)
     return home(request)
+
+
+def ics(request, groupe):
+    groupe = get_object_or_404(Group, pk=groupe)
+    c = {
+            'groupe': groupe,
+            'group_name': group_name(groupe),
+            'ok': moments_ok(groupe),
+            }
+    return render(request, 'when/groupe.ics', c, content_type="text/calendar")  # TODO charset
