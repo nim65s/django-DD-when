@@ -1,0 +1,17 @@
+BEGIN:VCALENDAR
+PRODID:-//Æn.im//Crénaux pour libres pour {{ group_name }}//FR
+X-WR-CALNAME:Crénaux pour libres pour {{ group_name }}
+X-WR-TIMEZONE:Europe/Paris
+VERSION:2.0
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+{% for evt in ok %}BEGIN:VEVENT
+DTSTART:{{ evt.moment|date:"c" }}
+DTEND:{{ evt.moment|date:"c" }}
+UID:AEnim - {{ group_name }} - {{ evt.moment|date:"c" }}
+DESCRIPTION:Créneau libre pour une partie de {{ group_name }}
+LOCATION:Sur le web \o/
+SUMMARY:{{ group_name }}
+CATEGORIES:GAME,ONLINE,ROLEPLAY
+END:VEVENT
+{% endfor %}END:VCALENDAR
