@@ -41,6 +41,7 @@ class DispoToPlayForm(ModelForm):
 class Groupe(Model):
     nom = CharField(max_length=50, unique=True)
     membres = ManyToManyField(User)
+    moments = ManyToManyField(Moment)
 
     class Meta:
         ordering = ["nom"]
