@@ -63,7 +63,7 @@ def dispo(request, moment, dispo):
 def ics(request, groupe):
     groupe = get_object_or_404(Group, pk=groupe)
     c = {
-            'nom': groupe.nom
+            'nom': groupe.nom,
             'ok': moments_ok(groupe),
             }
     return render(request, 'when/groupe.ics', c, content_type="text/calendar; charset=UTF-8")
