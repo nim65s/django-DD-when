@@ -61,7 +61,7 @@ def dispo(request, moment, dispo):
     return home(request)
 
 def ics(request, groupe):
-    groupe = get_object_or_404(Group, pk=groupe)
+    groupe = get_object_or_404(Groupe, pk=groupe)
     c = {
             'nom': groupe.nom,
             'ok': moments_ok(groupe),
