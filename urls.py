@@ -9,6 +9,6 @@ urlpatterns = patterns('',
         url(r'^dispo/(?P<moment>\d+)/(?P<dispo>\d)/$', dispo, name='dispo'),
         url(r'^groupes$', groupes, name='groupes'),
         url(r'^groupe/(?P<id>\d)/$', groupes, name='groupe'),
-        #url(r'^cal_(?P<groupe>\d+).ics$', ics, name='ics'),
+        url(r'^groupe_(?P<groupe>\d+).ics$', ics, name='ics'),
         url(r'^faq$', TemplateView.as_view(template_name='when/faq.html'), name="faq"),
         )

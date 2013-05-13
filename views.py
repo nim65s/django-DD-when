@@ -59,3 +59,12 @@ def dispo(request, moment, dispo):
     if 'next' in request.GET and request.GET['next'] == 'dispos':
         return dispos(request)
     return home(request)
+
+def ics(request, groupe):
+    groupe = get_object_or_404(Group, pk=groupe)
+    c = {
+            'groupe': groupe,
+            'group_name': group_name(groupe),
+            'ok': moments_ok(groupe),
+            }
+    return render(request, 'when/groupe.ics', c, content_type="text/calendar; charset=UTF-8")
