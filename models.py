@@ -1,19 +1,15 @@
 #-*- coding: utf-8 -*-
-from django.db.models import Model, ForeignKey, NullBooleanField, DateTimeField
+from django.db.models import Model, ForeignKey, ManyToManyField
+from django.db.models import NullBooleanField, DateTimeField, CharField
 from django.forms import ModelForm
 from django.contrib.auth.models import User, Group
 
 
-def group_name(groupe):
-    return groupe.name[5:].replace('_', ' ')
-
-
-def get_groupes():
-    return [(groupe, group_name(groupe)) for groupe in Group.objects.filter(name__startswith='when')]
-
-
 class Moment(Model):
     moment = DateTimeField(unique=True)
+
+    class Meta:
+        ordering = ["moment"]
 
     def __unicode__(self):
         return u'%s' % self.moment
@@ -26,6 +22,7 @@ class DispoToPlay(Model):
 
     class Meta:
         unique_together = ("moment", "user")
+        ordering = ["moment"]
 
     def __unicode__(self):
         if self.dispo:
@@ -39,3 +36,15 @@ class DispoToPlayForm(ModelForm):
     class Meta:
         model = DispoToPlay
         exclude = ('user')
+
+
+class Groupe(Model):
+    nom = CharField(max_length=50, unique=True)
+    membres = ManyToManyField(User)
+
+    class Meta:
+        ordering = ["nom"]
+
+    def __unicode__(self):
+        return u"Groupe «%s» avec %s" % (self.nom, ', '.join([m.username for m in self.membres.all()]))
+

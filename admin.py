@@ -5,3 +5,4 @@ from models import *
 
 admin.site.register(Moment)
 admin.site.register(DispoToPlay)
+admin.site.register(Groupe)

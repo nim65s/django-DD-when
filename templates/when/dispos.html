@@ -11,9 +11,9 @@
         {{ dispo.user }}
         {% if dispo.user == request.user %} -
             {% if dispo.dispo %}
-                <a href="{% url 'when:pasdispo' dispo.moment.id %}?next=dispos#dispos_{{ dispo.moment.moment|date:"Y-m-d" }}">Nan, je suis pas là :(</a>
+                <a href="{% url 'when:dispo' dispo.moment.id 0 %}?next=dispos#dispos_{{ dispo.moment.moment|date:"Y-m-d" }}">Nan, je suis pas là :(</a>
             {% else %}
-                <a href="{% url 'when:dispo' dispo.moment.id %}?next=dispos#dispos_{{ dispo.moment.moment|date:"Y-m-d" }}">En fait, je suis dispo ! \o/</a>
+                <a href="{% url 'when:dispo' dispo.moment.id 1 %}?next=dispos#dispos_{{ dispo.moment.moment|date:"Y-m-d" }}">En fait, je suis dispo ! \o/</a>
             {% endif %}
         {% endif %}
     </p>
