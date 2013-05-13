@@ -10,7 +10,7 @@ from datetime import datetime
 
 def moments_ok(groupe):
     moments = []
-    for moment in Moment.objects.filter(moment__gte=datetime.now()).order_by('moment'):
+    for moment in groupe.moments.filter(moment__gte=datetime.now()):
         for user in groupe.membres.all():  # TODO: aggregate ? En tout cas faut démochifier…
             if DispoToPlay.objects.get_or_create(moment=moment, user=user)[0].dispo is False:
                 break
@@ -59,6 +59,7 @@ def dispo(request, moment, dispo):
     if 'next' in request.GET and request.GET['next'] == 'dispos':
         return dispos(request)
     return home(request)
+
 
 def ics(request, groupe):
     groupe = get_object_or_404(Groupe, pk=groupe)
