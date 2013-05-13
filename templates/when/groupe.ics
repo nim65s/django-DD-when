@@ -1,6 +1,6 @@
 BEGIN:VCALENDAR
 PRODID:-//Æn.im//Crénaux pour libres pour {{ nom }}//FR
-X-WR-CALNAME:Crénaux pour libres pour {{ nom }}
+X-WR-CALNAME:{{ nom }}
 X-WR-TIMEZONE:Europe/Paris
 VERSION:2.0
 CALSCALE:GREGORIAN
@@ -8,8 +8,8 @@ METHOD:PUBLISH
 {% load tz %}{% for evt in ok %}BEGIN:VEVENT
 DTSTART:{{ evt.moment|utc|date:"Ymd\THis\Z" }}
 DTEND:{{ evt.moment|utc|date:"Ymd\THis\Z" }}
-UID:AEnim - {{ nom }}: {{ evt.moment|date:"c" }}
-DESCRIPTION:Créneau libre pour une partie de {{ nom }}
+UID:perso.saurel.me/when - {{ nom }}: {{ evt.moment|date:"c" }}
+DESCRIPTION:Créneau libre pour une partie du groupe «{{ nom }}»
 LOCATION:Sur le web \\o/
 SUMMARY:{{ nom }}
 CATEGORIES:GAME,ONLINE,ROLEPLAY
