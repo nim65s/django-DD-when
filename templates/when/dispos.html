@@ -9,7 +9,7 @@
     {% ifchanged dispo.moment.moment|date:"W" %}</td></tr><tr><td><p style=text-align:center;">{{ dispo.moment.moment|date:"W" }}</p>{% endifchanged %}
     {% ifchanged dispo.moment.moment.day %}</td><td><p style="text-align:center;">{{ dispo.moment.moment|date:"j" }}</p>{% endifchanged %}
     {% ifchanged dispo.moment.moment|date:"jH" %}<br>{{ dispo.moment.moment|date:"H:i" }}: {% endifchanged %}
-    {% if dispo.user == request.user %}<a href="{% url 'when:dispo' dispo.moment.id dispo.dispo.bit_length %}?next=dispos">{% endif %}
+    {% if dispo.user == request.user %}<a href="{% url 'when:dispo' dispo.moment.id dispo.dispo.real %}?next=dispos">{% endif %}
         <span style="color:{% if dispo.dispo %}green{% else %}red{% endif %}">{{ dispo.user }}</span>,
     {% if dispo.user == request.user %}</a>{% endif %}
 {% endfor %}
