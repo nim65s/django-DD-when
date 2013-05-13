@@ -49,7 +49,7 @@ def groupes(request, id=None):
 @login_required
 def dispo(request, moment, dispo):
     dtp = DispoToPlay.objects.get_or_create(user=request.user, moment=Moment.objects.get(id=moment))[0]
-    if dispo == '1':
+    if dispo == '0':  # C’est plus simple dans le template comme ça
         dtp.dispo = True
         messages.success(request, u"Welcome Back \o/")
     else:

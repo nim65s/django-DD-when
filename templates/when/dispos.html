@@ -3,21 +3,16 @@
 {% block content %}
 <h1>Disponibilités</h1>
 
+<table border="1">
 {% for dispo in dispos %}
-    {% ifchanged %}<h2>{{ dispo.moment.moment|date:"F Y" }}</h2>{% endifchanged %}
-    {% ifchanged %}<h3 id="dispos_{{ dispo.moment.moment|date:"Y-m-d" }}">{{ dispo.moment.moment|date:"l j" }}</h3>{% endifchanged %}
-    <h4>{{ dispo.moment.moment|date:"H:i" }}</h4>
-    <p>
-        {% if dispo.dispo %}OK{% else %}KO{% endif %}: 
-        {{ dispo.user }}
-        {% if dispo.user == request.user %} -
-            {% if dispo.dispo %}
-                <a href="{% url 'when:dispo' dispo.moment.id 0 %}?next=dispos#dispos_{{ dispo.moment.moment|date:"Y-m-d" }}">Nan, je suis pas là :(</a>
-            {% else %}
-                <a href="{% url 'when:dispo' dispo.moment.id 1 %}?next=dispos#dispos_{{ dispo.moment.moment|date:"Y-m-d" }}">En fait, je suis dispo ! \o/</a>
-            {% endif %}
-        {% endif %}
-    </p>
+    {% ifchanged dispo.moment.moment.month %}</td></tr><tr><th colspan="8">{{ dispo.moment.moment|date:"F Y" }}</th></tr><tr><td colspan="{{ dispo.moment.moment.isoweekday }}">{% endifchanged %}
+    {% ifchanged dispo.moment.moment|date:"W" %}</td></tr><tr><td><p style=text-align:center;">{{ dispo.moment.moment|date:"W" }}</p>{% endifchanged %}
+    {% ifchanged dispo.moment.moment.day %}</td><td><p style="text-align:center;">{{ dispo.moment.moment|date:"j" }}</p>{% endifchanged %}
+    {% ifchanged dispo.moment.moment|date:"jH" %}<br>{{ dispo.moment.moment|date:"H:i" }}: {% endifchanged %}
+    {% if dispo.user == request.user %}<a href="{% url 'when:dispo' dispo.moment.id dispo.dispo.bit_length %}?next=dispos">{% endif %}
+        <span style="color:{% if dispo.dispo %}green{% else %}red{% endif %}">{{ dispo.user }}</span>,
+    {% if dispo.user == request.user %}</a>{% endif %}
 {% endfor %}
+</table>
 
 {% endblock %}
