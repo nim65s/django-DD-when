@@ -4,7 +4,7 @@
 <h1>Groupes</h1>
 
 {% for groupe in groupes %}
-    <h2>{{ groupe.nom }}{% if groupes|length > 1 %} (<a href="{% url 'when:groupe' groupe.id %}">ne voir que celui-ci</a>{% endif %})</h2>
+    <h2>{{ groupe.nom }}{% if groupes|length > 1 %} (<a href="{% url 'when:groupe' groupe.id %}">ne voir que celui-ci</a>){% endif %}</h2>
     <ul>
         {% for user in groupe.membres.all %}
             <li>{{ user.username }} ({{ user.first_name }} {{ user.last_name }}): <a href="mailto:{{ user.email }}">mail</a></ls>
