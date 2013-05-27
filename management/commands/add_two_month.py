@@ -17,7 +17,7 @@ class Command(BaseCommand):
         now = datetime.now()
         then = now + timedelta(days=60)
 
-        dt = tz.localize(datetime(now.year, nom.month, 1, 20))
+        dt = tz.localize(datetime(now.year, now.month, 1, 20))
         end = tz.localize(datetime(then.year, then.month, 1, 20))
 
         jour = timedelta(1)
