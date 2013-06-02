@@ -4,6 +4,7 @@
 <h1>Disponibilités</h1>
 
 <table border="1">
+<thead><tr><th></th><th>Lundi</th><th>Mardi</th><th>Mercredi</th><th>Jeudi</th><th>Vendredi</th><th>Samedi</th><th>Dimanche</th></tr></thead><tbody>
 {% for dispo in dispos %}
     {% ifchanged dispo.moment.moment.month %}</td></tr><tr><th colspan="8">{{ dispo.moment.moment|date:"F Y" }}</th></tr><tr><td colspan="{{ dispo.moment.moment.isoweekday }}">{% endifchanged %}
     {% ifchanged dispo.moment.moment|date:"W" %}</td></tr><tr><td><p style=text-align:center;">{{ dispo.moment.moment|date:"W" }}</p>{% endifchanged %}
@@ -13,6 +14,6 @@
         <span style="color:{% if dispo.dispo %}green{% else %}red{% endif %}">{{ dispo.user }}</span>,
     {% if dispo.user == request.user %}</a>{% endif %}
 {% endfor %}
-</table>
+</tbody></table>
 
 {% endblock %}
