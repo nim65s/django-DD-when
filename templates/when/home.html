@@ -7,7 +7,7 @@
     <h2>{{ groupe.nom }}</h2>
     <ul>
         {% for moment in moments %}
-        <li>{{ moment.moment }} - <a href="{% url 'when:dispo' moment.id 0 %}">Je suis pas dispo :(</a></li>
+        <li>{{ moment.moment }} - <a href="{% url 'when:dispo' moment.id 1 %}">Je suis pas dispo :(</a></li>
         {% endfor %}
     </ul>
     <p>
