@@ -1,7 +1,6 @@
 #-*- coding: utf-8 -*-
 from django.db.models import Model, ForeignKey, ManyToManyField, CharField, IntegerField
 from django.db.models import NullBooleanField, DateTimeField, CommaSeparatedIntegerField
-from django.forms import ModelForm
 from django.contrib.auth.models import User, Group
 
 
@@ -30,12 +29,6 @@ class DispoToPlay(Model):
         if self.dispo is None:  # TODO: NYI
             return u'%s peut essayer d’être dispo le %s' % (self.user, self.moment)
         return u'%s n’est pas dispo le %s' % (self.user, self.moment)
-
-
-class DispoToPlayForm(ModelForm):
-    class Meta:
-        model = DispoToPlay
-        exclude = ('user')
 
 
 class Groupe(Model):
