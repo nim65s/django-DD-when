@@ -42,6 +42,7 @@ def organise_dispos(dispos):
 
 
 class WhenCalendar(LocaleHTMLCalendar):
+    """ Génère un calendrier HTML avec les dispos de tout le monde classées par jour """
     def __init__(self, dispos, user, firstweekday=0, locale=None):
         LocaleHTMLCalendar.__init__(self, firstweekday, locale)
         self.dispos = organise_dispos(dispos)
@@ -95,9 +96,7 @@ class WhenCalendar(LocaleHTMLCalendar):
 
 
 def home(request):
-    groupes = []
-    for groupe in request.user.groupe_set.all():
-        groupes.append((groupe, moments_ok(groupe)))
+    groupes = [(g, moments_ok(g)) for g in request.user.groupe_set.all()]
     return render(request, 'when/home.html', {'groupes': groupes})
 
 
@@ -106,7 +105,6 @@ def dispos(request):
     dispos = DispoToPlay.objects.filter(moment__moment__gte=tzloc(datetime.now()))
     cal = WhenCalendar(dispos=dispos, user=request.user)
     return render(request, 'when/dispos.html', {'cal': mark_safe(cal.formatwhen())})
-
 
 
 @login_required
