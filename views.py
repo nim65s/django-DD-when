@@ -107,7 +107,7 @@ def home(request):
 @login_required
 def dispos(request):
     dispos = DispoToPlay.objects.filter(moment__moment__gte=tzloc(datetime.now()),
-            moment__dispotoplay__user=request.user))
+            moment__dispotoplay__user=request.user)
     cal = WhenCalendar(dispos=dispos, user=request.user)
     return render(request, 'when/dispos.html', {'cal': mark_safe(cal.formatwhen())})
 
