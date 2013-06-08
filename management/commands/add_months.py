@@ -11,12 +11,16 @@ from pytz import timezone
 tzloc = timezone(settings.TIME_ZONE).localize
 
 class Command(BaseCommand):
-    args = u''
-    help = u'Ajoute les dates et des dispos pour les deux prochains mois'
+    args = u'N'
+    help = u'Ajoute les dates et des dispos pour les N prochains mois'
 
     def handle(self, *args, **options):
+        N = 1
+        if args[0]:
+            N = int(args[0])
+
         now = datetime.now()
-        then = now + timedelta(days=60)
+        then = now + timedelta(days=N*30)
 
         end = tzloc(datetime(then.year, then.month, 1, 20))
         jour = timedelta(1)
