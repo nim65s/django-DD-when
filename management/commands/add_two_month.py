@@ -17,27 +17,22 @@ class Command(BaseCommand):
         now = datetime.now()
         then = now + timedelta(days=60)
 
-        dt = tz.localize(datetime(now.year, now.month, 1, 20))
         end = tz.localize(datetime(then.year, then.month, 1, 20))
-
         jour = timedelta(1)
-        onze = timedelta(hours=9) # 11h = 20h - 9h
 
-        while dt < end:
-            dts = [dt]
-            if dt.weekday() >= 5:
-                dts.append(dt-onze)
-            for d in dts:
-                moment = Moment.objects.get_or_create(moment=d)
-                if moment[1]:
-                    self.stdout.write(u'Création du moment %s' % moment[0])
-                for groupe in Groupe.objects.all():
-                    if groupe.debut == d.hour:
-                        groupe.moments.add(moment[0])
-                        groupe.save()
-                        self.stdout.write(u'Ajout du moment %s au groupe %s' % (moment[0], groupe))
-                        for user in groupe.membres.all():
-                            dtp = DispoToPlay.objects.get_or_create(moment=moment[0], user=user)
-                            if dtp[1]:
-                                self.stdout.write(u'Création de la dispo %s' % dtp[0])
-            dt += jour
+        for groupe in Groupe.objects.all():
+            dt = tz.localize(datetime(now.year, now.month, 1, 20))
+            jours = [int(i) for i in groupe.jours.split(',')]
+            while dt < end:
+                if dt.weekday() in jours:
+                    moment = Moment.objects.get_or_create(moment=tz.localize(datetime(dt.year, dt.month, dt.day, groupe.debut)))
+                    if moment[1]:
+                        self.stdout.write(u'Création du moment %s' % moment[0])
+                    groupe.moments.add(moment[0])
+                    groupe.save()
+                    self.stdout.write(u'Ajout du moment %s au groupe %s' % (moment[0], groupe))
+                    for user in groupe.membres.all():
+                        dtp = DispoToPlay.objects.get_or_create(moment=moment[0], user=user)
+                        if dtp[1]:
+                            self.stdout.write(u'Création de la dispo %s' % dtp[0])
+                dt += jour

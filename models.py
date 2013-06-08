@@ -1,6 +1,6 @@
 #-*- coding: utf-8 -*-
-from django.db.models import Model, ForeignKey, ManyToManyField
-from django.db.models import NullBooleanField, DateTimeField, CharField, IntegerField
+from django.db.models import Model, ForeignKey, ManyToManyField, CharField, IntegerField
+from django.db.models import NullBooleanField, DateTimeField, CommaSeparatedIntegerField
 from django.forms import ModelForm
 from django.contrib.auth.models import User, Group
 
@@ -40,6 +40,7 @@ class DispoToPlayForm(ModelForm):
 
 class Groupe(Model):
     nom = CharField(max_length=50, unique=True)
+    jours = CommaSeparatedIntegerField(max_length=13)
     debut = IntegerField()  # heure de début
     duree = IntegerField()  # durée d’une partie, en heures
     membres = ManyToManyField(User)
