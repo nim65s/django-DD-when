@@ -19,14 +19,17 @@ tzloc = tz.localize
 def moments_ok(groupe):
     """ Liste les 10 prochains moments OK pour un groupe """
     moments = []
-    for moment in groupe.moments.filter(moment__gte=tzloc(datetime.now())):
-        for user in groupe.membres.all():
-            if DispoToPlay.objects.get(moment=moment, user=user).dispo is False:
-                break
+    seen = {}
+    n_membres = len(groupe.membres.all())
+    for m in groupe.moments.filter(dispotoplay__dispo=True, moment__gte=tzloc(datetime.now())):
+        if m not in seen:
+            seen[m] = 1
         else:
-            moments.append(moment)
-            if len(moments) > 9:
-                break
+            seen[m] += 1
+            if seen[m] == n_membres:
+                moments.append(m)
+                if len(moments) > 9:
+                    break
     return moments
 
 
