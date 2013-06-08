@@ -115,8 +115,10 @@ def dispos(request):
 @login_required
 def groupes(request, id=None):
     if id:
-        return render(request, 'when/groupes.html', {'groupes': [get_object_or_404(Groupe, id=id)] })
-    return render(request, 'when/groupes.html', {'groupes': Groupe.objects.all()})
+        groupes = [get_object_or_404(Groupe, id=id)]
+    else:
+        groupes = Groupe.objects.all()
+    return render(request, 'when/groupes.html', {'groupes': groupes})
 
 
 @login_required
