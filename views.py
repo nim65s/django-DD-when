@@ -61,7 +61,7 @@ class WhenCalendar(LocaleHTMLCalendar):
                 m = dtp.moment.moment
                 if m.hour != hour:
                     hour = m.hour
-                    retour += '<br>%i:%02i: ' % (hour, m.minute)
+                    retour += '<br>%s: ' % m.strftime('%H:%M')
                 if dtp.dispo is True:
                     classe = 'green'
                 else:
