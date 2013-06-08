@@ -32,12 +32,12 @@ class Command(BaseCommand):
                 if moment[1]:
                     self.stdout.write(u'Création du moment %s' % moment[0])
                 for groupe in Groupe.objects.all():
-                    for user in groupe.membres.all():
-                        dtp = DispoToPlay.objects.get_or_create(moment=moment[0], user=user)
-                        if dtp[1]:
-                            self.stdout.write(u'Création de la dispo %s' % dtp[0])
-                    if (groupe.id == 1 and d.hour == 11) or (groupe.id == 2 and d.hour == 20):
+                    if groupe.debut == d.hour:
                         groupe.moments.add(moment[0])
                         groupe.save()
                         self.stdout.write(u'Ajout du moment %s au groupe %s' % (moment[0], groupe))
+                        for user in groupe.membres.all():
+                            dtp = DispoToPlay.objects.get_or_create(moment=moment[0], user=user)
+                            if dtp[1]:
+                                self.stdout.write(u'Création de la dispo %s' % dtp[0])
             dt += jour

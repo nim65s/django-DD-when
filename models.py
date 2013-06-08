@@ -40,7 +40,8 @@ class DispoToPlayForm(ModelForm):
 
 class Groupe(Model):
     nom = CharField(max_length=50, unique=True)
-    duree = IntegerField()
+    debut = IntegerField()  # heure de début
+    duree = IntegerField()  # durée d’une partie, en heures
     membres = ManyToManyField(User)
     moments = ManyToManyField(Moment)
 
