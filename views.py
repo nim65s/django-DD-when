@@ -68,7 +68,7 @@ class WhenCalendar(LocaleHTMLCalendar):
                     classe = 'red'
                 if dtp.user == self.user:
                     retour += u'<a href="%s?next=dispos">' % reverse('when:dispo', kwargs={'moment': dtp.moment.id, 'dispo': dtp.dispo.real})
-                retour += u'<span style="color:%s">%s</span>, ' % (classe, dtp.user)
+                retour += u'<span style="color:%s">%s</span> ' % (classe, dtp.user)
                 if dtp.user == self.user:
                     retour += '</a>'
         retour += '</td>'
