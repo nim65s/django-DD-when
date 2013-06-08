@@ -12,7 +12,8 @@ from datetime import datetime, date
 from calendar import LocaleHTMLCalendar
 from pytz import timezone
 
-tzloc = timezone(settings.TIME_ZONE).localize
+tz = timezone(settings.TIME_ZONE)
+tzloc = tz.localize
 
 
 def moments_ok(groupe):
@@ -58,7 +59,7 @@ class WhenCalendar(LocaleHTMLCalendar):
         hour = None
         if date(self.cur_year, self.cur_month, day) in self.dispos:
             for dtp in self.dispos[date(self.cur_year , self.cur_month, day)]:
-                m = tzloc(dtp.moment.moment)
+                m = dtp.moment.moment.astimezone(tz)
                 if m.hour != hour:
                     hour = m.hour
                     retour += '<br>%s: ' % m.strftime('%H:%M')
