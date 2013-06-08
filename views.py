@@ -117,7 +117,7 @@ def groupes(request, id=None):
     if id:
         groupes = [get_object_or_404(Groupe, id=id)]
     else:
-        groupes = Groupe.objects.all()
+        groupes = request.user.groupe_set.all()
     return render(request, 'when/groupes.html', {'groupes': groupes})
 
 
