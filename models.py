@@ -22,7 +22,7 @@ class DispoToPlay(Model):
 
     class Meta:
         unique_together = ("moment", "user")
-        ordering = ["moment"]
+        ordering = ["moment", "user"]
 
     def __unicode__(self):
         if self.dispo:

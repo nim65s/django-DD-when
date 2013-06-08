@@ -1,18 +1,26 @@
 #-*- coding: utf-8 -*-
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.core.urlresolvers import reverse
 from django.shortcuts import render, get_object_or_404
+from django.utils.safestring import mark_safe
 
 from when.models import *
 
-from datetime import datetime
+from datetime import datetime, date
+from calendar import LocaleHTMLCalendar
+from pytz import timezone
+
+tzloc = timezone(settings.TIME_ZONE).localize
 
 
 def moments_ok(groupe):
+    """ Liste les 10 prochains moments OK pour un groupe """
     moments = []
-    for moment in groupe.moments.filter(moment__gte=datetime.now()):
-        for user in groupe.membres.all():  # TODO: aggregate ? En tout cas faut démochifier…
-            if DispoToPlay.objects.get_or_create(moment=moment, user=user)[0].dispo is False:
+    for moment in groupe.moments.filter(moment__gte=tzloc(datetime.now())):
+        for user in groupe.membres.all():
+            if DispoToPlay.objects.get(moment=moment, user=user).dispo is False:
                 break
         else:
             moments.append(moment)
@@ -21,22 +29,83 @@ def moments_ok(groupe):
     return moments
 
 
+def organise_dispos(dispos):
+    """ Prend une liste de dispos et les classe dans un dict avec la date à la clef """
+    timetable = dict()
+    for dispo in dispos:
+        dispo_date = dispo.moment.moment.date()
+        if dispo_date in timetable:
+            timetable[dispo_date].append(dispo)
+        else:
+            timetable[dispo_date] = [dispo]
+    return timetable
+
+
+class WhenCalendar(LocaleHTMLCalendar):
+    def __init__(self, dispos, user, firstweekday=0, locale=None):
+        LocaleHTMLCalendar.__init__(self, firstweekday, locale)
+        self.dispos = organise_dispos(dispos)
+        moments = [dispo.moment.moment for dispo in dispos]
+        self.first_moment = min(moments)
+        self.last_moment = max(moments)
+        self.user = user
+
+    def formatday(self, day, weekday):
+        if day == 0:
+            return '<td class="noday">&nbsp;</td>'
+        retour = '<td class="%s">%s<br>' % (self.cssclasses[weekday], day)
+        hour = None
+        if date(self.cur_year, self.cur_month, day) in self.dispos:
+            for dtp in self.dispos[date(self.cur_year , self.cur_month, day)]:
+                m = dtp.moment.moment
+                if m.hour != hour:
+                    hour = m.hour
+                    retour += '<br>%i:%02i: ' % (hour, m.minute)
+                if dtp.dispo is True:
+                    classe = 'green'
+                else:
+                    classe = 'red'
+                if dtp.user == self.user:
+                    retour += u'<a href="%s?next=dispos">' % reverse('when:dispo', kwargs={'moment': dtp.moment.id, 'dispo': dtp.dispo.real})
+                retour += u'<span style="color:%s">%s</span>, ' % (classe, dtp.user)
+                if dtp.user == self.user:
+                    retour += '</a>'
+        retour += '</td>'
+        return retour
+
+    def formatwhen(self, withyear=True):
+        first_year = self.first_moment.year
+        v = []
+        a = v.append
+        a('<table border="1" cellpadding="0" cellspacing="0" class="month">')
+        a('\n')
+        a(self.formatweekheader())
+        if first_year == self.last_moment.year:
+            for month in range(self.first_moment.month, self.last_moment.month + 1):
+                a(self.formatmonthname(first_year, month, withyear=withyear))
+                for week in self.monthdays2calendar(first_year, month):
+                    self.cur_month = month
+                    self.cur_year = first_year
+                    a(self.formatweek(week))
+                    a('\n')
+        else:
+            pass  # TODO
+        return u''.join(v)
+
+
 def home(request):
     groupes = []
-    for groupe in request.user.groupe_set.order_by('nom'):
+    for groupe in request.user.groupe_set.all():
         groupes.append((groupe, moments_ok(groupe)))
     return render(request, 'when/home.html', {'groupes': groupes})
 
 
 @login_required
 def dispos(request):
-    dispos = DispoToPlay.objects.filter(moment__moment__gte=datetime.now()).order_by('moment')
-    #if request.method == 'POST':
-        #form = DispoToPlayForm(request.POST)
-        #if form.is_valid():
-            #form.instance.user = request.user
-            #form.save()
-    return render(request, 'when/dispos.html', {'dispos': dispos})
+    dispos = DispoToPlay.objects.filter(moment__moment__gte=tzloc(datetime.now()))
+    cal = WhenCalendar(dispos=dispos, user=request.user)
+    return render(request, 'when/dispos.html', {'cal': mark_safe(cal.formatwhen())})
+
 
 
 @login_required

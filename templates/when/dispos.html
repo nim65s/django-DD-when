@@ -3,17 +3,6 @@
 {% block content %}
 <h1>Disponibilités</h1>
 
-<table border="1">
-<thead><tr><th></th><th>Lundi</th><th>Mardi</th><th>Mercredi</th><th>Jeudi</th><th>Vendredi</th><th>Samedi</th><th>Dimanche</th></tr></thead><tbody>
-{% for dispo in dispos %}
-    {% ifchanged dispo.moment.moment.month %}{% if not forloop.first %}</td></tr>{% endif %}<tr><th colspan="8">{{ dispo.moment.moment|date:"F Y" }}</th></tr><tr><td>{% endifchanged %}
-    {% ifchanged dispo.moment.moment|date:"W" %}</td></tr><tr><td colspan="{{ dispo.moment.moment.isoweekday }}"><p>{{ dispo.moment.moment|date:"W" }}</p>{% endifchanged %}
-    {% ifchanged dispo.moment.moment.day %}</td><td><p style="text-align:center;">{{ dispo.moment.moment|date:"j" }}</p>{% endifchanged %}
-    {% ifchanged dispo.moment.moment|date:"jH" %}<br>{{ dispo.moment.moment|date:"H:i" }}: {% endifchanged %}
-    {% if dispo.user == request.user %}<a href="{% url 'when:dispo' dispo.moment.id dispo.dispo.real %}?next=dispos">{% endif %}
-        <span style="color:{% if dispo.dispo %}green{% else %}red{% endif %}">{{ dispo.user }}</span>,
-    {% if dispo.user == request.user %}</a>{% endif %}
-{% endfor %}
-</td></tr></tbody></table>
+{{ cal }}
 
 {% endblock %}
