@@ -84,10 +84,11 @@ class WhenCalendar(LocaleHTMLCalendar):
             for month in range(self.first_moment.month, self.last_moment.month + 1):
                 a(self.formatmonthname(first_year, month, withyear=withyear))
                 for week in self.monthdays2calendar(first_year, month):
-                    self.cur_month = month
-                    self.cur_year = first_year
-                    a(self.formatweek(week))
-                    a('\n')
+                    if date(first_year, month, max(week)[0]) >= self.first_moment.date():
+                        self.cur_month = month
+                        self.cur_year = first_year
+                        a(self.formatweek(week))
+                        a('\n')
         else:
             pass  # TODO
         return u''.join(v)
