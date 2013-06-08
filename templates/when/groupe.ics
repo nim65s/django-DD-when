@@ -1,17 +1,17 @@
 BEGIN:VCALENDAR
-PRODID:-//Æn.im//Crénaux pour libres pour {{ nom }}//FR
-X-WR-CALNAME:{{ nom }}
+PRODID:-//Æn.im//Crénaux pour libres pour {{ groupe.nom }}//FR
+X-WR-CALNAME:{{ groupe.nom }}
 X-WR-TIMEZONE:Europe/Paris
 VERSION:2.0
 CALSCALE:GREGORIAN
 METHOD:PUBLISH
-{% load tz %}{% for evt in ok %}BEGIN:VEVENT
-DTSTART:{{ evt.moment|utc|date:"Ymd\THis\Z" }}
-DTEND:{{ evt.moment|utc|date:"Ymd\THis\Z" }}
-UID:perso.saurel.me/when - {{ nom }}: {{ evt.moment|date:"c" }}
-DESCRIPTION:Créneau libre pour une partie du groupe «{{ nom }}»
+{% load tz %}{% load when_tags %}{% for evt in ok %}BEGIN:VEVENT
+DTSTART:{{ evt.moment|ics_date }}
+DTEND:{{ evt.moment|ics_date:groupe.duree }}
+UID:perso.saurel.me/when - {{ groupe.nom }}: {{ evt.moment|date:"c" }}
+DESCRIPTION:Créneau libre pour une partie du groupe «{{ groupe.nom }}»
 LOCATION:Sur le web \\o/
-SUMMARY:{{ nom }}
+SUMMARY:{{ groupe.nom }}
 CATEGORIES:GAME,ONLINE,ROLEPLAY
 END:VEVENT
 {% endfor %}END:VCALENDAR

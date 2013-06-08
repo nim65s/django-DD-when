@@ -1,6 +1,6 @@
 #-*- coding: utf-8 -*-
 from django.db.models import Model, ForeignKey, ManyToManyField
-from django.db.models import NullBooleanField, DateTimeField, CharField
+from django.db.models import NullBooleanField, DateTimeField, CharField, IntegerField
 from django.forms import ModelForm
 from django.contrib.auth.models import User, Group
 
@@ -40,6 +40,7 @@ class DispoToPlayForm(ModelForm):
 
 class Groupe(Model):
     nom = CharField(max_length=50, unique=True)
+    duree = IntegerField()
     membres = ManyToManyField(User)
     moments = ManyToManyField(Moment)
 
