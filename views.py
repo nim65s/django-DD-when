@@ -53,7 +53,7 @@ class WhenCalendar(LocaleHTMLCalendar):
     def formatday(self, day, weekday):
         if day == 0:
             return '<td class="noday">&nbsp;</td>'
-        retour = '<td class="%s">%s<br>' % (self.cssclasses[weekday], day)
+        retour = '<td class="%s"><p style="text-align: center">%s</p><br>' % (self.cssclasses[weekday], day)
         hour = None
         if date(self.cur_year, self.cur_month, day) in self.dispos:
             for dtp in self.dispos[date(self.cur_year , self.cur_month, day)]:
