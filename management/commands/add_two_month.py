@@ -1,31 +1,32 @@
 #-*- coding: utf-8 -*-
 
+from django.conf import settings
 from django.core.management.base import BaseCommand, CommandError
+
 from when.models import Moment, DispoToPlay, Groupe
 
 from datetime import datetime, timedelta
 from pytz import timezone
 
+tzloc = timezone(settings.TIME_ZONE).localize
 
 class Command(BaseCommand):
     args = u''
     help = u'Ajoute les dates et des dispos pour les deux prochains mois'
 
     def handle(self, *args, **options):
-        tz = timezone('Europe/Paris')
-
         now = datetime.now()
         then = now + timedelta(days=60)
 
-        end = tz.localize(datetime(then.year, then.month, 1, 20))
+        end = tzloc(datetime(then.year, then.month, 1, 20))
         jour = timedelta(1)
 
         for groupe in Groupe.objects.all():
-            dt = tz.localize(datetime(now.year, now.month, 1, 20))
+            dt = tzloc(datetime(now.year, now.month, 1, 20))
             jours = [int(i) for i in groupe.jours.split(',')]
             while dt < end:
                 if dt.weekday() in jours:
-                    moment = Moment.objects.get_or_create(moment=tz.localize(datetime(dt.year, dt.month, dt.day, groupe.debut)))
+                    moment = Moment.objects.get_or_create(moment=tzloc(datetime(dt.year, dt.month, dt.day, groupe.debut)))
                     if moment[1]:
                         self.stdout.write(u'Création du moment %s' % moment[0])
                     groupe.moments.add(moment[0])
