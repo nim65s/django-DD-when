@@ -58,7 +58,7 @@ class WhenCalendar(LocaleHTMLCalendar):
         hour = None
         if date(self.cur_year, self.cur_month, day) in self.dispos:
             for dtp in self.dispos[date(self.cur_year , self.cur_month, day)]:
-                m = dtp.moment.moment
+                m = tzloc(dtp.moment.moment)
                 if m.hour != hour:
                     hour = m.hour
                     retour += '<br>%s: ' % m.strftime('%H:%M')
