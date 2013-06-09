@@ -16,7 +16,7 @@ tz = timezone(settings.TIME_ZONE)
 tzloc = tz.localize
 
 
-def moments_ok(groupe):
+def moments_ok(groupe, n_max=None):
     """ Liste les 10 prochains moments OK pour un groupe """
     moments = []
     seen = {}
@@ -28,7 +28,7 @@ def moments_ok(groupe):
             seen[m] += 1
             if seen[m] == n_membres:
                 moments.append(m)
-                if len(moments) > 9:
+                if n_max and len(moments) => n_max:
                     break
     return moments
 
@@ -100,7 +100,7 @@ class WhenCalendar(LocaleHTMLCalendar):
 
 
 def home(request):
-    groupes = [(g, moments_ok(g)) for g in request.user.groupe_set.all()]
+    groupes = [(g, moments_ok(g, n_max=10)) for g in request.user.groupe_set.all()]
     return render(request, 'when/home.html', {'groupes': groupes})
 
 
