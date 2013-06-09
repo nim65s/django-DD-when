@@ -28,7 +28,7 @@ def moments_ok(groupe, n_max=None):
             seen[m] += 1
             if seen[m] == n_membres:
                 moments.append(m)
-                if n_max and len(moments) => n_max:
+                if n_max and len(moments) >= n_max:
                     break
     return moments
 
