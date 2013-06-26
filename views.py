@@ -99,6 +99,7 @@ class WhenCalendar(LocaleHTMLCalendar):
         return u''.join(v)
 
 
+@login_required
 def home(request):
     groupes = [(g, moments_ok(g, n_max=10)) for g in request.user.groupe_set.all()]
     return render(request, 'when/home.html', {'groupes': groupes})
