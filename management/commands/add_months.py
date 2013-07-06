@@ -16,7 +16,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         N = 1
-        if args[0]:
+        if len(args) > 0:
             N = int(args[0])
 
         now = datetime.now()
