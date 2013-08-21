@@ -19,7 +19,7 @@ tzloc = tz.localize
 try:
     WHEN_ADD_MONTH_DAYS = settings.WHEN_ADD_MONTH_DAYS
 except:
-    WHEN_ADD_MONTH_DAYS = 30
+    WHEN_ADD_MONTH_DAYS = 60
 
 
 def moments_ok(groupe, n_max=None):
@@ -153,7 +153,7 @@ def ics(request, groupe):
 
 
 def add_month():
-    now = datetime.now()
+    now = tzloc(datetime.now())
     then = now + timedelta(days=WHEN_ADD_MONTH_DAYS)
     end = tzloc(datetime(then.year, then.month, 1))
 
