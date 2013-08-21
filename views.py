@@ -164,12 +164,8 @@ def add_month():
             if dt.weekday() in jours:
                 moment = Moment.objects.get_or_create(moment=tzloc(datetime(dt.year, dt.month, dt.day, groupe.debut)))
                 if moment[1]:
-                    self.stdout.write(u'Création du moment %s' % moment[0])
                     groupe.moments.add(moment[0])
                     groupe.save()
-                    self.stdout.write(u'Ajout du moment %s au groupe %s' % (moment[0], groupe))
                 for user in groupe.membres.all():
                     dtp = DispoToPlay.objects.get_or_create(moment=moment[0], user=user)
-                    if dtp[1]:
-                        self.stdout.write(u'Création de la dispo %s' % dtp[0])
             dt += timedelta(1)
