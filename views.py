@@ -8,12 +8,18 @@ from django.utils.safestring import mark_safe
 
 from when.models import *
 
-from datetime import datetime, date
+from datetime import datetime, date, timedelta
 from calendar import LocaleHTMLCalendar
 from pytz import timezone
 
 tz = timezone(settings.TIME_ZONE)
 tzloc = tz.localize
+
+
+try:
+    WHEN_ADD_MONTH_DAYS = settings.WHEN_ADD_MONTH_DAYS
+except:
+    WHEN_ADD_MONTH_DAYS = 30
 
 
 def moments_ok(groupe, n_max=None):
@@ -30,6 +36,10 @@ def moments_ok(groupe, n_max=None):
                 moments.append(m)
                 if n_max and len(moments) >= n_max:
                     break
+    else:
+        if n_max:
+            add_month()
+
     return moments
 
 
@@ -140,3 +150,26 @@ def dispo(request, moment, dispo):
 def ics(request, groupe):
     g = get_object_or_404(Groupe, pk=groupe)
     return render(request, 'when/groupe.ics', {'groupe': g, 'ok': moments_ok(g)}, content_type="text/calendar; charset=UTF-8")
+
+
+def add_month():
+    now = datetime.now()
+    then = now + timedelta(days=WHEN_ADD_MONTH_DAYS)
+    end = tzloc(datetime(then.year, then.month, 1))
+
+    for groupe in Groupe.objects.all():
+        dt = tzloc(datetime(now.year, now.month, 1))
+        jours = [int(i) for i in groupe.jours.split(',')]
+        while dt < end:
+            if dt.weekday() in jours:
+                moment = Moment.objects.get_or_create(moment=tzloc(datetime(dt.year, dt.month, dt.day, groupe.debut)))
+                if moment[1]:
+                    self.stdout.write(u'Création du moment %s' % moment[0])
+                    groupe.moments.add(moment[0])
+                    groupe.save()
+                    self.stdout.write(u'Ajout du moment %s au groupe %s' % (moment[0], groupe))
+                for user in groupe.membres.all():
+                    dtp = DispoToPlay.objects.get_or_create(moment=moment[0], user=user)
+                    if dtp[1]:
+                        self.stdout.write(u'Création de la dispo %s' % dtp[0])
+            dt += timedelta(1)
