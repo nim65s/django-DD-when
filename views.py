@@ -28,7 +28,8 @@ def moments_ok(groupe, n_max=None):
     seen = {}
     membres = len(groupe.membres.all())
     n_membres = len(membres)
-    for dtp in DispoToPlay.objects.filter(dispo=True, moment__moment__gte=tzloc(datetime.now()), user__in=membres):
+    moments_du_groupe = groupe.moments.all()
+    for dtp in DispoToPlay.objects.filter(dispo=True, moment__in=moments_du_groupe, moment__moment__gte=tzloc(datetime.now()), user__in=membres):
         m = dtp.moment
         if m not in seen:
             seen[m] = 1
