@@ -26,8 +26,10 @@ def moments_ok(groupe, n_max=None):
     """ Liste les 10 prochains moments OK pour un groupe """
     moments = []
     seen = {}
-    n_membres = len(groupe.membres.all())
-    for m in groupe.moments.filter(dispotoplay__dispo=True, moment__gte=tzloc(datetime.now())):
+    membres = len(groupe.membres.all())
+    n_membres = len(membres)
+    for dtp in DispoToPlay.objects.filter(dispo=True, moment__moment__gte=tzloc(datetime.now()), user__in=membres):
+        m = dtp.moment
         if m not in seen:
             seen[m] = 1
         else:
