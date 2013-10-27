@@ -1,10 +1,12 @@
-{% extends "main.html" %}
+{% extends "zinnia/skeleton.html" %}
 
 {% block titre %}Nim’s web.log: D&amp;D: When ?{% endblock %}
 {% block soustitre %}D&amp;D: When ?{% endblock %}
 
 {% block nav %}
+  <ul class="nav navbar-nav">
     <li><a href="{% url 'when:home' %}">Prévisions</a></li>
     <li><a href="{% url 'when:groupes' %}">Groupes</a></li>
     <li><a href="{% url 'when:dispos' %}">Dispos</a></li>
+  </ul>
 {% endblock %}
