@@ -8,8 +8,8 @@ from django.utils.safestring import mark_safe
 
 from when.models import *
 
+import calendar
 from datetime import datetime, date, timedelta
-from calendar import LocaleHTMLCalendar
 from pytz import timezone
 
 tz = timezone(settings.TIME_ZONE)
@@ -58,14 +58,19 @@ def organise_dispos(dispos):
     return timetable
 
 
-class WhenCalendar(LocaleHTMLCalendar):
+class WhenCalendar(calendar.LocaleHTMLCalendar):
     """ Génère un calendrier HTML avec les dispos de tout le monde classées par jour """
     def __init__(self, dispos, user, firstweekday=0, locale=None):
-        LocaleHTMLCalendar.__init__(self, firstweekday, locale)
+        calendar.LocaleHTMLCalendar.__init__(self, firstweekday, locale)
         self.dispos = organise_dispos(dispos)
         moments = [dispo.moment.moment for dispo in dispos]
-        self.first_moment = min(moments)
-        self.last_moment = max(moments)
+        if moments:
+            self.first_moment = min(moments)
+            self.last_moment = max(moments)
+        else:
+            now = datetime.now()
+            self.first_moment = datetime(now.year, now.month, 1)
+            self.last_moment = datetime(now.year, now.month, calendar.monthrange(now.year, now.month)[1])
         self.user = user
 
     def formatday(self, day, weekday):
