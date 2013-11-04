@@ -79,7 +79,7 @@ class WhenCalendar(calendar.LocaleHTMLCalendar):
         retour = '<td class="%s"><p style="text-align: center">%s</p><br>' % (self.cssclasses[weekday], day)
         hour = None
         if date(self.cur_year, self.cur_month, day) in self.dispos:
-            for dtp in self.dispos[date(self.cur_year , self.cur_month, day)]:
+            for dtp in self.dispos[date(self.cur_year, self.cur_month, day)]:
                 m = dtp.moment.moment.astimezone(tz)
                 if m.hour != hour:
                     hour = m.hour

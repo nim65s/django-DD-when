@@ -44,4 +44,3 @@ class Groupe(Model):
 
     def __unicode__(self):
         return u"Groupe «%s» avec %s" % (self.nom, ', '.join([m.username for m in self.membres.all()]))
-
