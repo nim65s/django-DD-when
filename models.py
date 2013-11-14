@@ -1,7 +1,6 @@
 #-*- coding: utf-8 -*-
-from django.db.models import Model, ForeignKey, ManyToManyField, CharField, IntegerField
-from django.db.models import NullBooleanField, DateTimeField, CommaSeparatedIntegerField
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import Group, User
+from django.db.models import CharField, CommaSeparatedIntegerField, DateTimeField, ForeignKey, IntegerField, ManyToManyField, Model, NullBooleanField
 
 
 class Moment(Model):

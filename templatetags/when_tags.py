@@ -1,10 +1,10 @@
 #-*- coding: utf-8 -*-
 
-from django.template import Library
-from django.templatetags.tz import utc
-from django.template.defaultfilters import date
-
 from datetime import timedelta
+
+from django.template import Library
+from django.template.defaultfilters import date
+from django.templatetags.tz import utc
 
 register = Library()
 

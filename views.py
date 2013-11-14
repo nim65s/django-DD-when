@@ -1,16 +1,16 @@
 #-*- coding: utf-8 -*-
+import calendar
+from datetime import date, datetime, timedelta
+
+from pytz import timezone
+
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import get_object_or_404, render
 from django.utils.safestring import mark_safe
-
 from when.models import *
-
-import calendar
-from datetime import datetime, date, timedelta
-from pytz import timezone
 
 tz = timezone(settings.TIME_ZONE)
 tzloc = tz.localize
@@ -89,7 +89,8 @@ class WhenCalendar(calendar.LocaleHTMLCalendar):
                 else:
                     classe = 'red'
                 if dtp.user == self.user:
-                    retour += u'<span style="font-weight:bold;"><a href="%s?next=dispos">' % reverse('when:dispo', kwargs={'moment': dtp.moment.id, 'dispo': dtp.dispo.real})
+                    url = reverse('when:dispo', kwargs={'moment': dtp.moment.id, 'dispo': dtp.dispo.real})
+                    retour += u'<span style="font-weight:bold;"><a href="%s?next=dispos">' % url
                 retour += u'<span style="color:%s">%s</span> ' % (classe, dtp.user)
                 if dtp.user == self.user:
                     retour += '</a></span>'
