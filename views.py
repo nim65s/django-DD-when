@@ -1,4 +1,7 @@
-#-*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
+
+from __future__ import unicode_literals
+
 import calendar
 from datetime import date, datetime, timedelta
 
@@ -90,8 +93,8 @@ class WhenCalendar(calendar.LocaleHTMLCalendar):
                     classe = 'red'
                 if dtp.user == self.user:
                     url = reverse('when:dispo', kwargs={'moment': dtp.moment.id, 'dispo': dtp.dispo.real})
-                    retour += u'<span style="font-weight:bold;"><a href="%s?next=dispos">' % url
-                retour += u'<span style="color:%s">%s</span> ' % (classe, dtp.user)
+                    retour += '<span style="font-weight:bold;"><a href="%s?next=dispos">' % url
+                retour += '<span style="color:%s">%s</span> ' % (classe, dtp.user)
                 if dtp.user == self.user:
                     retour += '</a></span>'
         retour += '</td>'
@@ -115,7 +118,7 @@ class WhenCalendar(calendar.LocaleHTMLCalendar):
                         a('\n')
         else:
             pass  # TODO
-        return u''.join(v)
+        return ''.join(v)
 
 
 @login_required
@@ -146,10 +149,10 @@ def dispo(request, moment, dispo):
     dtp = DispoToPlay.objects.get_or_create(user=request.user, moment=Moment.objects.get(id=moment))[0]
     if dispo == '0':  # C’est plus simple dans le template comme ça
         dtp.dispo = True
-        messages.success(request, u"Welcome Back \o/")
+        messages.success(request, "Welcome Back \o/")
     else:
         dtp.dispo = False
-        messages.info(request, u"Indisponibilité enregistrée")
+        messages.info(request, "Indisponibilité enregistrée")
     dtp.save()
     if 'next' in request.GET and request.GET['next'] == 'dispos':
         return dispos(request)

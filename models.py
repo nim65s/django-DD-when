@@ -1,18 +1,24 @@
-#-*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
+
+from __future__ import unicode_literals
+
 from django.contrib.auth.models import Group, User
 from django.db.models import CharField, CommaSeparatedIntegerField, DateTimeField, ForeignKey, IntegerField, ManyToManyField, Model, NullBooleanField
+from django.utils.encoding import python_2_unicode_compatible
 
 
+@python_2_unicode_compatible
 class Moment(Model):
     moment = DateTimeField(unique=True)
 
     class Meta:
         ordering = ["moment"]
 
-    def __unicode__(self):
-        return u'%s' % self.moment
+    def __str__(self):
+        return '%s' % self.moment
 
 
+@python_2_unicode_compatible
 class DispoToPlay(Model):
     moment = ForeignKey(Moment)
     user = ForeignKey(User)
@@ -22,14 +28,15 @@ class DispoToPlay(Model):
         unique_together = ("moment", "user")
         ordering = ["moment", "user"]
 
-    def __unicode__(self):
+    def __str__(self):
         if self.dispo:
-            return u'%s est dispo le %s' % (self.user, self.moment)
+            return '%s est dispo le %s' % (self.user, self.moment)
         if self.dispo is None:  # TODO: NYI
-            return u'%s peut essayer d’être dispo le %s' % (self.user, self.moment)
-        return u'%s n’est pas dispo le %s' % (self.user, self.moment)
+            return '%s peut essayer d’être dispo le %s' % (self.user, self.moment)
+        return '%s n’est pas dispo le %s' % (self.user, self.moment)
 
 
+@python_2_unicode_compatible
 class Groupe(Model):
     nom = CharField(max_length=50, unique=True)
     jours = CommaSeparatedIntegerField(max_length=13)
@@ -41,5 +48,5 @@ class Groupe(Model):
     class Meta:
         ordering = ["nom"]
 
-    def __unicode__(self):
-        return u"Groupe «%s» avec %s" % (self.nom, ', '.join([m.username for m in self.membres.all()]))
+    def __str__(self):
+        return "Groupe «%s» avec %s" % (self.nom, ', '.join([m.username for m in self.membres.all()]))

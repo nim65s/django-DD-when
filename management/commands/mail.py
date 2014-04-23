@@ -1,4 +1,6 @@
-#-*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
+
+from __future__ import unicode_literals
 
 from datetime import datetime, timedelta
 
@@ -12,9 +14,9 @@ tzloc = timezone(settings.TIME_ZONE).localize
 
 
 class Command(BaseCommand):
-    args = u''
-    help = u'Donne le champ TO si on veut envoyer un mail à tout le monde'
+    args = ''
+    help = 'Donne le champ TO si on veut envoyer un mail à tout le monde'
 
     def handle(self, *args, **options):
-        liste = [u'%s %s <%s>' % (u.first_name, u.last_name, u.email) for u in User.objects.annotate(num_groups=Count('groupe')).filter(num_groups__gt=0)]
+        liste = ['%s %s <%s>' % (u.first_name, u.last_name, u.email) for u in User.objects.annotate(num_groups=Count('groupe')).filter(num_groups__gt=0)]
         self.stdout.write(', '.join(liste))
