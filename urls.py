@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 
 from django.conf.urls import patterns, url
 from django.views.generic import TemplateView
-from when.views import *
+from when.views import dispo, dispos, groupes, home, ics
 
 urlpatterns = patterns('',
         url(r'^$', home, name='home'),

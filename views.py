@@ -13,7 +13,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404, render
 from django.utils.safestring import mark_safe
-from when.models import *
+from when.models import DispoToPlay, Groupe, Moment
 
 tz = timezone(settings.TIME_ZONE)
 tzloc = tz.localize
@@ -179,5 +179,5 @@ def add_month():
                     groupe.moments.add(moment[0])
                     groupe.save()
                 for user in groupe.membres.all():
-                    dtp = DispoToPlay.objects.get_or_create(moment=moment[0], user=user)
+                    DispoToPlay.objects.get_or_create(moment=moment[0], user=user)
             dt += timedelta(1)

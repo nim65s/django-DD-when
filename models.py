@@ -2,7 +2,7 @@
 
 from __future__ import unicode_literals
 
-from django.contrib.auth.models import Group, User
+from django.contrib.auth.models import User
 from django.db.models import CharField, CommaSeparatedIntegerField, DateTimeField, ForeignKey, IntegerField, ManyToManyField, Model, NullBooleanField
 from django.utils.encoding import python_2_unicode_compatible
 

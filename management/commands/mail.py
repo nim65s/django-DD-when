@@ -2,15 +2,9 @@
 
 from __future__ import unicode_literals
 
-from datetime import datetime, timedelta
-
-from pytz import timezone
-
-from django.core.management.base import BaseCommand, CommandError
+from django.contrib.auth.models import User
+from django.core.management.base import BaseCommand
 from django.db.models import Count
-from when.models import *
-
-tzloc = timezone(settings.TIME_ZONE).localize
 
 
 class Command(BaseCommand):
