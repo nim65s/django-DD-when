@@ -1,13 +1,7 @@
-# -*- coding: utf-8 -*-
-
-from __future__ import unicode_literals
-
 from django.contrib.auth.models import User
 from django.db.models import CharField, CommaSeparatedIntegerField, DateTimeField, ForeignKey, IntegerField, ManyToManyField, Model, NullBooleanField
-from django.utils.encoding import python_2_unicode_compatible
 
 
-@python_2_unicode_compatible
 class Moment(Model):
     moment = DateTimeField(unique=True)
 
@@ -18,7 +12,6 @@ class Moment(Model):
         return '%s' % self.moment
 
 
-@python_2_unicode_compatible
 class DispoToPlay(Model):
     moment = ForeignKey(Moment)
     user = ForeignKey(User)
@@ -36,7 +29,6 @@ class DispoToPlay(Model):
         return '%s n’est pas dispo le %s' % (self.user, self.moment)
 
 
-@python_2_unicode_compatible
 class Groupe(Model):
     nom = CharField(max_length=50, unique=True)
     jours = CommaSeparatedIntegerField(max_length=13)
